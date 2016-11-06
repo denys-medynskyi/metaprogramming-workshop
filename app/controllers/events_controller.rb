@@ -4,7 +4,7 @@ class EventsController < ApplicationController
   # GET /events
   # GET /events.json
   def index
-    @events = Event.all
+    @events = events_scope
   end
 
   # GET /events/1
@@ -62,6 +62,15 @@ class EventsController < ApplicationController
   end
 
   private
+    def events_scope
+      if params[:club_id]
+        Club.find(params[:club_id]).events
+      elsif params[:user_id]
+        User.find(params[:user_id]).events
+      else
+        Event.all
+      end
+    end
     # Use callbacks to share common setup or constraints between actions.
     def set_event
       @event = Event.find(params[:id])
