@@ -1,14 +1,12 @@
-require 'pry-rails'
 module MyAccessor
-  def my_attr_accessor(*attribute_names)
-    attribute_names.each do |attribute_name|
-      instance_variable_name = "@#{attribute_name}"
-      define_method(attribute_name) do
-        instance_variable_get(instance_variable_name)
+  def my_attr_accessor(*attributes)
+    attributes.each do |attribute_name|
+      define_method attribute_name do
+        instance_variable_get("@#{attribute_name}")
       end
 
-      define_method("#{attribute_name}=") do |val|
-        instance_variable_set(instance_variable_name, val)
+      define_method "#{attribute_name}=" do |value|
+        instance_variable_set("@#{attribute_name}", value)
       end
     end
   end
